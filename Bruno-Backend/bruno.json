@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "MM-Back-test",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
