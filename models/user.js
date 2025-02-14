@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Schema, model } = mongoose;
 
 const userSchema = new mongoose.Schema(
   {
@@ -12,7 +13,17 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    friendslist: { type: Schema.Types.ObjectId, ref: "Friend" },
+
+    // password: {
+    //   type: String,
+    //   minLength: 3,
+    //   required: true,
+    // },
+
+    friendslist: {
+      type: Schema.Types.ObjectId,
+      ref: "Friend",
+    },
   },
   { timestamps: true }
 );
@@ -24,4 +35,4 @@ userSchema.set("toJSON", {
   },
 });
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = model("User", userSchema);
