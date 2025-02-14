@@ -29,5 +29,3 @@ const runQueries = async () => {
 
   connect();
 };
-
-runQueries();
