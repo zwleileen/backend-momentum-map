@@ -9,7 +9,7 @@ const logger = require("morgan");
 
 // Import routers
 const authRouter = require("./controllers/auth");
-const usersRouter = require("./controllers/");
+const usersRouter = require("./controllers/users");
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI);
