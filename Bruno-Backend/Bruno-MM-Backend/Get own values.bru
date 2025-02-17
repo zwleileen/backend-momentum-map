@@ -1,0 +1,15 @@
+meta {
+  name: Get own values
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{HOST}}/values/:valuesId
+  body: json
+  auth: inherit
+}
+
+params:path {
+  valuesId: 67b32bd1fefa331051828bcd
+}
