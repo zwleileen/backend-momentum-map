@@ -5,10 +5,6 @@ const verifyToken = require("../middleware/verify-token");
 
 router.post("/new", verifyToken, async (req, res) => {
   try {
-    console.log("Received values data:", req.body);
-    console.log("User from token:", req.user);
-
-    // Restructure the data to match the schema
     const valueData = {
       name: req.user._id,
       values: {
@@ -29,7 +25,6 @@ router.post("/new", verifyToken, async (req, res) => {
     console.log("Creating value with data:", valueData);
 
     const values = await Value.create(valueData);
-    // Populate the user data if needed
     const populatedValues = await Value.findById(values._id).populate("name");
 
     console.log("Created values:", populatedValues);
@@ -40,12 +35,16 @@ router.post("/new", verifyToken, async (req, res) => {
   }
 });
 
-router.get("/:valuesId", verifyToken, async (req, res) => {
+router.get("/:userId", verifyToken, async (req, res) => {
   try {
-    const values = await Value.findById(req.params.valuesId).populate("name");
+    const values = await Value.findOne({ name: req.params.userId }).populate(
+      "name"
+    );
 
     if (!values) {
-      return res.status(404).json({ error: "Values not found for this user" });
+      return res.status(404).json({
+        error: "Values not found for this user",
+      });
     }
 
     console.log("Found values:", values);
