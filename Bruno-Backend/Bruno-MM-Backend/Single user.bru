@@ -1,0 +1,15 @@
+meta {
+  name: Single user
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{HOST}}/users/:userId
+  body: none
+  auth: inherit
+}
+
+params:path {
+  userId: 67b2b8de9a010f7205b06c9d
+}
