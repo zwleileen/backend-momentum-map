@@ -26,7 +26,7 @@ app.use(logger("dev"));
 
 // Routes
 app.use("/auth", authRouter);
-app.use("/", usersRouter);
+app.use("/users", usersRouter);
 app.use("/values", valuesRouter);
 
 // Start the server and listen on port 3000
