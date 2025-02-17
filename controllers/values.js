@@ -5,10 +5,36 @@ const verifyToken = require("../middleware/verify-token");
 
 router.post("/new", verifyToken, async (req, res) => {
   try {
-    req.body.name = req.user._id;
-    const values = await Value.create(req.body);
-    values._doc.name = req.user;
-    res.status(200).json(values);
+    console.log("Received values data:", req.body);
+    console.log("User from token:", req.user);
+
+    // Restructure the data to match the schema
+    const valueData = {
+      name: req.user._id,
+      values: {
+        // Nest the values under a 'values' object
+        Universalism: req.body.Universalism,
+        Benevolence: req.body.Benevolence,
+        Tradition: req.body.Tradition,
+        Conformity: req.body.Conformity,
+        Security: req.body.Security,
+        Power: req.body.Power,
+        Achievement: req.body.Achievement,
+        Hedonism: req.body.Hedonism,
+        Stimulation: req.body.Stimulation,
+        SelfDirection: req.body.SelfDirection,
+      },
+    };
+
+    console.log("Creating value with data:", valueData);
+
+    const values = await Value.create(valueData);
+    // Populate the user data if needed
+    const populatedValues = await Value.findById(values._id).populate("name");
+
+    console.log("Created values:", populatedValues);
+
+    res.status(201).json(populatedValues);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
