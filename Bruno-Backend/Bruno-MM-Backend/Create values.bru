@@ -1,0 +1,28 @@
+meta {
+  name: Create values
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{HOST}}/values/new
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "values": {
+        "Universalism": 5,
+        "Benevolence": 4,
+        "Tradition": 1,
+        "Conformity": 1,
+        "Security": 2,
+        "Power": 1,
+        "Achievement": 4,
+        "Hedonism": 1,
+        "Stimulation": 3,
+        "SelfDirection": 5
+    }
+  }
+}

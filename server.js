@@ -10,6 +10,7 @@ const logger = require("morgan");
 // Import routers
 const authRouter = require("./controllers/auth");
 const usersRouter = require("./controllers/users");
+const valuesRouter = require("./controllers/values");
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI);
@@ -26,6 +27,7 @@ app.use(logger("dev"));
 // Routes
 app.use("/auth", authRouter);
 app.use("/", usersRouter);
+app.use("/values", valuesRouter);
 
 // Start the server and listen on port 3000
 app.listen(3000, () => {
