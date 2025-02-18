@@ -5,14 +5,16 @@ meta {
 }
 
 post {
-  url: {{HOST}}/friends/request
+  url: {{HOST}}/friend/request
   body: json
   auth: inherit
 }
 
 body:json {
   {
-    "recipientId": "67b3ee3de3a627f026521a67"
+    "requester": "67b3ee3de3a627f026521a67",
+    "recipient": "67b4026d786fb7bb70967443",
+    "status": "pending"
   }
 }
 

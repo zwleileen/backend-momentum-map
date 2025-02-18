@@ -1,0 +1,19 @@
+meta {
+  name: Accept Friend
+  type: http
+  seq: 8
+}
+
+put {
+  url: http://localhost:3000/friends/accept/:requestId
+  body: json
+  auth: bearer
+}
+
+params:path {
+  requestId: 67b42417193d0a2f34ee4e8b
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJuYW1lIjoiY2FsZWIiLCJfaWQiOiI2N2I0MDI2ZDc4NmZiN2JiNzA5Njc0NDMifSwiaWF0IjoxNzM5ODYwMTA5LCJleHAiOjE3Mzk5NDY1MDl9.-sfzIeoWDBskk5nS71qFube5w6ODdSSYl1pAFMAuuaU
+}
