@@ -64,18 +64,14 @@ router.put("/update", verifyToken, async (req, res) => {
   try {
     const existingValues = await Value.findOne({ name: req.user._id });
 
-    if (existingValues) {
-      existingValues.values = req.body;
-      await existingValues.save();
-      res.status(200).json(existingValues);
-    } else {
-      const newValues = new Value({
-        name: req.user._id,
-        values: req.body,
-      });
-      await newValues.save();
-      res.status(201).json(newValues);
+    if (!existingValues) {
+      return res.status(404).json({ error: "Values not found" });
     }
+
+    existingValues.values = req.body;
+    await existingValues.save();
+
+    res.status(200).json(existingValues);
   } catch (error) {
     console.error("Error updating values:", error);
     res.status(500).json({ error: "Internal server error" });
