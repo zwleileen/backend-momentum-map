@@ -1,0 +1,21 @@
+meta {
+  name: New Friend
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{HOST}}/friends/request
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "recipientId": "67b3ee3de3a627f026521a67"
+  }
+}
+
+vars:pre-request {
+  HOST: 
+}

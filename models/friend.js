@@ -1,16 +1,16 @@
+const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
 const friendSchema = new Schema(
   {
-    requester: { type: Schema.Types.ObjectId, ref: "User" },
-    receipient: {
-      type: String,
-      required: true,
-    },
+    requester: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    recipient: { type: Schema.Types.ObjectId, ref: "User", required: true },
     status: {
-      type: String
+      type: String,
+      enum: ["pending", "accepted", "declined"],
+      default: "pending",
+    },
   },
-},
   { timestamps: true }
 );
 
