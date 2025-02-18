@@ -8,7 +8,6 @@ router.post("/", verifyToken, async (req, res) => {
     const valueData = {
       name: req.user._id,
       values: {
-        // Nest the values under a 'values' object
         Universalism: req.body.Universalism,
         Benevolence: req.body.Benevolence,
         Tradition: req.body.Tradition,
@@ -57,6 +56,23 @@ router.get("/:userId", verifyToken, async (req, res) => {
     res.status(200).json(values);
   } catch (error) {
     console.error("Error fetching values:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.put("/update", verifyToken, async (req, res) => {
+  try {
+    const existingValues = await Value.findOne({name: req.user._id}});
+
+    if (existingValues) {
+        existingValues.values = req.body;
+        await existingValues.save();
+        res.status(200).json(existingValues);
+    } else {
+        const newValues 
+    }
+  } catch (error) {
+    console.error("Error updating values:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
