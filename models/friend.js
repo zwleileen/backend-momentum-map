@@ -2,8 +2,15 @@ const { Schema, model } = mongoose;
 
 const friendSchema = new Schema(
   {
-    author: { type: Schema.Types.ObjectId, ref: "User" },
+    requester: { type: Schema.Types.ObjectId, ref: "User" },
+    receipient: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String
   },
+},
   { timestamps: true }
 );
 
