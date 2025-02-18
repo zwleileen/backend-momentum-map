@@ -1,0 +1,28 @@
+meta {
+  name: Update values
+  type: http
+  seq: 9
+}
+
+put {
+  url: {{HOST}}/values/update
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    
+        "Universalism": 3,
+        "Benevolence": 3,
+        "Tradition": 3,
+        "Conformity": 3,
+        "Security": 3,
+        "Power": 3,
+        "Achievement": 3,
+        "Hedonism": 3,
+        "Stimulation": 3,
+        "SelfDirection": 3
+  
+  }
+}

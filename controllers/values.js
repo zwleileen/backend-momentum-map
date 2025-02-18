@@ -60,21 +60,26 @@ router.get("/:userId", verifyToken, async (req, res) => {
   }
 });
 
-// router.put("/update", verifyToken, async (req, res) => {
-//   try {
-//     const existingValues = await Value.findOne({name: req.user._id}});
+router.put("/update", verifyToken, async (req, res) => {
+  try {
+    const existingValues = await Value.findOne({ name: req.user._id });
 
-//     if (existingValues) {
-//         existingValues.values = req.body;
-//         await existingValues.save();
-//         res.status(200).json(existingValues);
-//     } else {
-//         const newValues 
-//     }
-//   } catch (error) {
-//     console.error("Error updating values:", error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
+    if (existingValues) {
+      existingValues.values = req.body;
+      await existingValues.save();
+      res.status(200).json(existingValues);
+    } else {
+      const newValues = new Value({
+        name: req.user._id,
+        values: req.body,
+      });
+      await newValues.save();
+      res.status(201).json(newValues);
+    }
+  } catch (error) {
+    console.error("Error updating values:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 module.exports = router;
