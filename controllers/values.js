@@ -3,7 +3,7 @@ const router = express.Router();
 const Value = require("../models/value.js");
 const verifyToken = require("../middleware/verify-token");
 
-router.post("/new", verifyToken, async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
   try {
     const valueData = {
       name: req.user._id,
