@@ -49,9 +49,9 @@ router.get("/:userId", verifyToken, async (req, res) => {
     console.log("Found values:", values);
 
     // Check permissions:
-    if (values.name._id.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ error: "Unauthorized access!" });
-    }
+    // if (values.name._id.toString() !== req.user._id.toString()) {
+    //   return res.status(403).json({ error: "Unauthorized access!" });
+    // }
 
     res.status(200).json(values);
   } catch (error) {
