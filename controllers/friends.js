@@ -73,4 +73,14 @@ router.put("/accept/:requestId", verifyToken, async (req, res) => {
   }
 });
 
+router.get("/", verifyToken, async (req, res) => {
+  try {
+    const friends = await Friend.find({}, "requester");
+
+    res.json(friends);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
 module.exports = router;
