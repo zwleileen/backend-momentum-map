@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config();
+// const dotenv = require("dotenv").config(); // Can be written this way. Above is better.
 
 const User = require("../models/user");
 
@@ -28,7 +31,7 @@ router.post("/sign-up", async (req, res) => {
 
     res.status(201).json({ token });
   } catch (err) {
-    res.status(500).json({ err: err.message });
+    res.status(500).json({ err: err.message }); // fixed with this: https://stackoverflow.com/questions/58673430/error-secretorprivatekey-must-have-a-value
   }
 });
 
