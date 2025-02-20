@@ -75,8 +75,8 @@ router.put("/accept/:requestId", verifyToken, async (req, res) => {
 
 router.get("/", verifyToken, async (req, res) => {
   try {
-    const friends = await Friend.find({}, "requester");
-
+    const friends = await Friend.find({});
+    console.log(friends); //console log check
     res.json(friends);
   } catch (err) {
     res.status(500).json({ err: err.message });
