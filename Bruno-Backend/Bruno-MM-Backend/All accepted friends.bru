@@ -5,14 +5,11 @@ meta {
 }
 
 get {
-  url: http://localhost:3000/friends
+  url: http://localhost:3000/friends?userId=67b2c9e046c71c3e7384efa6
   body: json
   auth: inherit
 }
 
-body:json {
-  {
-    "requester": "67b2c9e046c71c3e7384efa6",
-    "status": "accepted"
-  }
+params:query {
+  userId: 67b2c9e046c71c3e7384efa6
 }
