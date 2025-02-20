@@ -78,4 +78,14 @@ router.put("/update", verifyToken, async (req, res) => {
   }
 });
 
+router.get("/", verifyToken, async (req, res) => {
+  try {
+    const values = await Value.find({}).populate("name");
+
+    res.json(values);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
 module.exports = router;
