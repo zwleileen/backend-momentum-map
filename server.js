@@ -31,6 +31,17 @@ app.use("/users", usersRouter);
 app.use("/values", valuesRouter);
 app.use("/friends", friendsRouter);
 
+//testing
+// app.use((req, res, next) => {
+//   console.log(`${req.method} ${req.path} - No route matched`);
+//   res.status(404).json({ error: "Not found" });
+// });
+
+// app.use((err, req, res, next) => {
+//   console.error("Error:", err);
+//   res.status(500).json({ error: "Internal server error" });
+// });
+
 // Start the server and listen on port 3000
 app.listen(3000, () => {
   console.log("The express app is ready!");
