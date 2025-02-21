@@ -1,17 +1,13 @@
 meta {
-  name: Get values
+  name: Get matched values
   type: http
-  seq: 10
+  seq: 13
 }
 
 get {
-  url: {{HOST}}/values/:userId
+  url: {{HOST}}/values/matches
   body: json
   auth: inherit
-}
-
-params:path {
-  userId: 67b44afe31b8731e592cdea9
 }
 
 body:json {
