@@ -1,0 +1,28 @@
+meta {
+  name: Get matched values
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{HOST}}/values/matches
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    
+        "Universalism": 4,
+        "Benevolence": 2,
+        "Tradition": 2,
+        "Conformity": 1,
+        "Security": 2,
+        "Power": 1,
+        "Achievement": 4,
+        "Hedonism": 1,
+        "Stimulation": 3,
+        "SelfDirection": 5
+  
+  }
+}
