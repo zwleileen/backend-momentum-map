@@ -1,0 +1,15 @@
+meta {
+  name: test
+  type: http
+  seq: 12
+}
+
+get {
+  url: http://localhost:3000/friends
+  body: json
+  auth: inherit
+}
+
+params:query {
+  ~userId: 67b2c9e046c71c3e7384efa6
+}
