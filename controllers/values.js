@@ -43,22 +43,31 @@ router.get("/matches", verifyToken, async (req, res) => {
       return res.status(404).json({ error: "User values not found." });
     }
 
+    //helper function for formatting
+    const formatValueName = (valueName) => {
+      if (valueName === "SelfDirection") {
+        return "Self-Direction";
+      }
+      return valueName;
+    };
+
     //helper function to get top 3 values of any user
     const getTop3Values = (valuesObj) => {
       return Object.entries(valuesObj)
-        .map(([name, score]) => ({ name, score }))
+        .map(([name, score]) => ({ name: formatValueName(name), score }))
         .sort((a, b) => b.score - a.score)
         .slice(0, 3);
     };
 
     //get top 3 values of the current user
     const userTop3 = getTop3Values(userValues.values);
+    console.log(userTop3);
 
     const matchedUsers = await Value.find({ name: { $ne: req.user._id } }) //ne means find values that _id !== user._id
       .populate("name")
       .lean(); //converts mongodb doc into plain JavaScript objects, filters out details like Mongoose method
-    console.log(matchedUsers);
-    // Compute matches
+    // console.log(matchedUsers);
+
     const matches = matchedUsers
       .map((otherUser) => {
         const otherUsersTop3 = getTop3Values(otherUser.values);
