@@ -58,6 +58,49 @@ router.put("/accept", verifyToken, async (req, res) => {
   }
 });
 
+//------------------------------ old way using params ---------
+
+// router.put("/accept/:requestId", verifyToken, async (req, res) => {
+//   try {
+//     const { requestId } = req.params;
+//     const currentUserId = req.user._id;
+
+//     const friendRequest = await Friend.findById(requestId);
+//     if (!friendRequest) {
+//       return res.status(404).json({ error: "Friend request not found" });
+//     }
+
+//     if (friendRequest.recipient.toString() !== currentUserId.toString()) {
+//       return res
+//         .status(403)
+//         .json({ error: "Not authorized to accept this request" });
+//     }
+
+//     if (friendRequest.status !== "pending") {
+//       return res.status(400).json({ error: "Friend request is not pending" });
+//     }
+
+//     friendRequest.status = "accepted";
+//     friendRequest.acceptedAt = new Date();
+//     await friendRequest.save();
+
+//     await Friend.create({
+//       requester: friendRequest.recipient,
+//       recipient: friendRequest.requester,
+//       status: "accepted",
+//       acceptedAt: new Date(),
+//     });
+
+//     res.json({
+//       message: "Friend request accepted",
+//       friendship: friendRequest,
+//     });
+//   } catch (error) {
+//     console.error("Error accepting friend request:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
+
 router.get("/:userId", verifyToken, async (req, res) => {
   try {
     const requesterId = req.params.userId;
