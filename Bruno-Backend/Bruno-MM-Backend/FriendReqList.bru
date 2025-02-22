@@ -1,0 +1,17 @@
+meta {
+  name: FriendReqList
+  type: http
+  seq: 12
+}
+
+put {
+  url: http://localhost:3000/friends/accept
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "status": "pending"
+  }
+}

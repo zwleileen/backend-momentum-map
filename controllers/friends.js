@@ -32,59 +32,45 @@ router.post("/request", verifyToken, async (req, res) => {
   }
 });
 
-router.put("/accept/:requestId", verifyToken, async (req, res) => {
+router.put("/accept", verifyToken, async (req, res) => {
   try {
-    const { requestId } = req.params;
+    const { status } = req.body;
     const currentUserId = req.user._id;
-
-    const friendRequest = await Friend.findById(requestId);
-    if (!friendRequest) {
-      return res.status(404).json({ error: "Friend request not found" });
+    if (!status || !currentUserId) {
+      return res.status(400).json({ error: "Not enough Params" });
     }
 
-    if (friendRequest.recipient.toString() !== currentUserId.toString()) {
-      return res
-        .status(403)
-        .json({ error: "Not authorized to accept this request" });
+    const currentUserRequests = await Friend.find({
+      //getting list base on 2 param - status and recipient id
+      status: status,
+      recipient: currentUserId,
+    }).populate("recipient");
+
+    if (!currentUserRequests || currentUserRequests.length === 0) {
+      return res.status(404).json({ error: "You have no friend requests." });
     }
 
-    if (friendRequest.status !== "pending") {
-      return res.status(400).json({ error: "Friend request is not pending" });
-    }
-
-    friendRequest.status = "accepted";
-    friendRequest.acceptedAt = new Date();
-    await friendRequest.save();
-
-    await Friend.create({
-      requester: friendRequest.recipient,
-      recipient: friendRequest.requester,
-      status: "accepted",
-      acceptedAt: new Date(),
-    });
-
-    res.json({
-      message: "Friend request accepted",
-      friendship: friendRequest,
-    });
-  } catch (error) {
-    console.error("Error accepting friend request:", error);
+    console.log(currentUserRequests);
+    res.json({ currentUserRequests });
+  } catch (err) {
+    console.error("accepting friends error", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
 router.get("/:userId", verifyToken, async (req, res) => {
-    try {
-      const requesterId = req.params.userId;
-      const friends = await Friend.find({ requester: requesterId, status: "accepted" }).populate(
-        "recipient"
-      ); 
-      console.log(friends);
-      res.json(friends);
-    } catch (err) {
-      res.status(500).json({ err: err.message });
-    }
-  });
+  try {
+    const requesterId = req.params.userId;
+    const friends = await Friend.find({
+      requester: requesterId,
+      status: "accepted",
+    }).populate("recipient");
+    console.log(friends);
+    res.json(friends);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
 
   router.delete("/:userId", verifyToken, async (req, res) => {
     const deleteId = req.params.userId;

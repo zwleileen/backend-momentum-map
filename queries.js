@@ -45,7 +45,7 @@ const createDefaultUsers = async () => {
 //TODO Remember to use AWAIT before running the functions
 const runQueries = async () => {
   console.log(`runQueris is running.`);
-  await createDefaultUsers(); //! ONLY USE THIS TO RESET TO DEFAULT USERS
+  // await createDefaultUsers(); //! ONLY USE THIS TO RESET TO DEFAULT USERS
 };
 
 connect();
