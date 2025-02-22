@@ -116,9 +116,40 @@ router.get("/:userId", verifyToken, async (req, res) => {
 });
 
   router.delete("/:userId", verifyToken, async (req, res) => {
-    const deleteId = req.params.userId;
+    const userId = req.user._id;
+    const userIdToDelete = req.params.userId;
 
-  });
+    try {
+        const friendAgreementId1 = await Friend.find({
+            requester: userIdToDelete,
+            recipient: userId,
+            status: "accepted",
+        });
+        const friendAgreementId2 = await Friend.find({
+            requester: userId,
+            recipient: userIdToDelete,
+            status: "accepted",
+        });
+
+        const friendAgreementsToDelete = [friendAgreementId1, friendAgreementId2];
+
+        const result = await Friend.deleteMany({ friendAgreementsToDelete });
+
+        res.status(200).json({
+            message: `Friend deleted`,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Error deleting friend",
+        });
+    }
+});
+
+
+
+
+
 
   // router.delete("/:hootId", verifyToken, async (req, res) => {
   //   try {
