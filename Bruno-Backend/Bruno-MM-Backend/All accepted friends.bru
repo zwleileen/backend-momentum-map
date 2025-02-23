@@ -1,15 +1,15 @@
 meta {
-  name: All accepted friends
+  name: All Accepted Friends
   type: http
-  seq: 11
+  seq: 12
 }
 
 get {
-  url: http://localhost:3000/friends?userId=67b2c9e046c71c3e7384efa6
+  url: http://localhost:3000/friends/:userId
   body: json
   auth: inherit
 }
 
-params:query {
-  userId: 67b2c9e046c71c3e7384efa6
+params:path {
+  userId: 67b44afe31b8731e592cdea9
 }

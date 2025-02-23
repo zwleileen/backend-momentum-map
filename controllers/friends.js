@@ -101,6 +101,7 @@ router.put("/accept", verifyToken, async (req, res) => {
 //   }
 // });
 
+// Returns all friends of particular userId
 router.get("/:userId", verifyToken, async (req, res) => {
   try {
     const requesterId = req.params.userId;
@@ -115,6 +116,7 @@ router.get("/:userId", verifyToken, async (req, res) => {
   }
 });
 
+// Deletes friend (user deletes userId)
 router.delete("/:userId", verifyToken, async (req, res) => {
   const userId = req.user._id;
   const userIdToDelete = req.params.userId;
