@@ -70,11 +70,7 @@ router.put("/accept/update", verifyToken, async (req, res) => {
         recipient: currentUserId, // Security check to ensure recipient is current user
       },
       {
-        //if current status is pending
-        status: status, // before is pending. after is accepted.
-        // Friend.create ({
-        // requester = recipiet
-        // })
+        status: status,
       },
       { new: true } // Added this to return the updated document instead of the old one
     );
@@ -84,6 +80,12 @@ router.put("/accept/update", verifyToken, async (req, res) => {
         .status(404)
         .json({ error: "Friends Log not found or unauthorised." });
     }
+
+    await Friend.create({
+      requester: currentUpdate.recipient,
+      recipient: currentUpdate.requester,
+      status: "accepted",
+    });
 
     res.json({ currentUpdate });
   } catch (err) {
