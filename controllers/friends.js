@@ -44,7 +44,7 @@ router.put("/accept", verifyToken, async (req, res) => {
       //getting list base on 2 param - status and recipient id
       status: status,
       recipient: currentUserId,
-    }).populate("recipient");
+    }).populate("requester"); // Populated wrong person. Hahahaha "requester" is the correct one
 
     if (!currentUserRequests || currentUserRequests.length === 0) {
       return res.status(404).json({ error: "You have no friend requests." });
