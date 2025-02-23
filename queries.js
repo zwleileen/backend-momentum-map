@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const mongoose = require("mongoose");
 const User = require("./models/user");
+const Friend = require("./models/friend");
 // const Hoot = require("./models/hoot");
 const bcrypt = require("bcrypt");
 
@@ -41,11 +42,27 @@ const createDefaultUsers = async () => {
   console.log(users);
 };
 
+const testingUpdateStatus = async () => {
+  //! works, but why the express side not working................
+  // for testing updating status from pending to accepted.
+  const test = await Friend.findOneAndUpdate(
+    {
+      _id: "67b8825c2d7a7007a5f69b85", // returned from frontend mongodbId of the friend log.
+      // recipient: "67b73e97d3855b5e92cdd61e", // returned from frontend user Test1
+    },
+    {
+      status: "pending", // changing status from pending to accepted and vice versa.
+    }
+  );
+  console.log(test);
+};
+
 //TODO Use this ONLY to test the above functions. Comment out when not in use.
 //TODO Remember to use AWAIT before running the functions
 const runQueries = async () => {
   console.log(`runQueris is running.`);
   // await createDefaultUsers(); //! ONLY USE THIS TO RESET TO DEFAULT USERS
+  await testingUpdateStatus();
 };
 
 connect();

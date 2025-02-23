@@ -58,7 +58,41 @@ router.put("/accept", verifyToken, async (req, res) => {
   }
 });
 
-//------------------------------ old way using params ---------
+router.put("/accept/update", verifyToken, async (req, res) => {
+  try {
+    const { status, updateId } = req.body; // MongoDB ID. NOT requester or recipient ID.
+    const currentUserId = req.user._id;
+
+    //https://www.mongodb.com/docs/manual/reference/method/db.collection.findOneAndUpdate/
+    const currentUpdate = await Friend.findOneAndUpdate(
+      {
+        _id: updateId,
+        recipient: currentUserId, // Security check to ensure recipient is current user
+      },
+      {
+        //if current status is pending
+        status: status, // before is pending. after is accepted.
+        // Friend.create ({
+        // requester = recipiet
+        // })
+      },
+      { new: true } // Added this to return the updated document instead of the old one
+    );
+
+    if (!currentUpdate) {
+      return res
+        .status(404)
+        .json({ error: "Friends Log not found or unauthorised." });
+    }
+
+    res.json({ currentUpdate });
+  } catch (err) {
+    console.error("accepting friends error", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+//-------------- old way using params --------- (a) redoing with queries over body. Look at /accept and /accept/update.
 
 // router.put("/accept/:requestId", verifyToken, async (req, res) => {
 //   try {

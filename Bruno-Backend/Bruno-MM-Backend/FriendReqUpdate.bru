@@ -1,0 +1,18 @@
+meta {
+  name: FriendReqUpdate
+  type: http
+  seq: 16
+}
+
+put {
+  url: http://localhost:3000/friends/accept/update
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "status": "pending",
+    "_id": "67b8829c2d7a7007a5f69b91"
+  }
+}
