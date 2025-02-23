@@ -1,0 +1,15 @@
+meta {
+  name: Delete Friend
+  type: http
+  seq: 16
+}
+
+delete {
+  url: {{HOST}}/friends/:userId
+  body: json
+  auth: inherit
+}
+
+params:path {
+  userId: 67b2c9e046c71c3e7384efa6
+}
