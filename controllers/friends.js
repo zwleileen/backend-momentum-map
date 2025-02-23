@@ -135,35 +135,7 @@ router.put("/accept/update", verifyToken, async (req, res) => {
 //   }
 // });
 
-// hardcoded works
-router.get("/", verifyToken, async (req, res) => {
-  try {
-    const friends = await Friend.find({
-      requester: "67b2c9e046c71c3e7384efa6",
-      status: "accepted",
-    }).populate("recipient");
-    console.log(friends);
-    res.json(friends);
-  } catch (err) {
-    res.status(500).json({ err: err.message });
-  }
-});
-
-// test 1
-router.get("/", verifyToken, async (req, res) => {
-  try {
-    const requesterId = req.params.userId;
-    const friends = await Friend.find({
-      requester: requesterId,
-      status: "accepted",
-    }).populate("recipient");
-    console.log(friends);
-    res.json(friends);
-  } catch (err) {
-    res.status(500).json({ err: err.message });
-  }
-});
-
+// Returns all friends of particular userId
 router.get("/:userId", verifyToken, async (req, res) => {
   try {
     const requesterId = req.params.userId;
@@ -177,5 +149,42 @@ router.get("/:userId", verifyToken, async (req, res) => {
     res.status(500).json({ err: err.message });
   }
 });
+
+// Deletes friend (user deletes userId)
+router.delete("/:userId", verifyToken, async (req, res) => {
+  const userId = req.user._id;
+  const userIdToDelete = req.params.userId;
+
+  try {
+      const friendAgreementId1 = await Friend.find({
+          requester: userIdToDelete,
+          recipient: userId,
+          status: "accepted",
+      });
+      const friendAgreementId2 = await Friend.find({
+          requester: userId,
+          recipient: userIdToDelete,
+          status: "accepted",
+      });
+
+      const friendAgreementsToDelete = [...friendAgreementId1, ...friendAgreementId2];
+      const idsToDelete = friendAgreementsToDelete.map(agreement => agreement._id);
+
+      // https://www.mongodb.com/docs/manual/reference/method/db.collection.deleteMany/
+      // note: deleteMany works with filter objects that differs from deleteOne
+    
+      const result = await Friend.deleteMany({ _id: { $in: idsToDelete } });
+
+      res.status(200).json({
+          message: `${result.deletedCount} agreements deleted`,
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({
+          message: "Error deleting agreements",
+      });
+  }
+});
+
 
 module.exports = router;
