@@ -115,55 +115,40 @@ router.get("/:userId", verifyToken, async (req, res) => {
   }
 });
 
-  router.delete("/:userId", verifyToken, async (req, res) => {
-    const userId = req.user._id;
-    const userIdToDelete = req.params.userId;
+router.delete("/:userId", verifyToken, async (req, res) => {
+  const userId = req.user._id;
+  const userIdToDelete = req.params.userId;
 
-    try {
-        const friendAgreementId1 = await Friend.find({
-            requester: userIdToDelete,
-            recipient: userId,
-            status: "accepted",
-        });
-        const friendAgreementId2 = await Friend.find({
-            requester: userId,
-            recipient: userIdToDelete,
-            status: "accepted",
-        });
+  try {
+      const friendAgreementId1 = await Friend.find({
+          requester: userIdToDelete,
+          recipient: userId,
+          status: "accepted",
+      });
+      const friendAgreementId2 = await Friend.find({
+          requester: userId,
+          recipient: userIdToDelete,
+          status: "accepted",
+      });
 
-        const friendAgreementsToDelete = [friendAgreementId1, friendAgreementId2];
+      const friendAgreementsToDelete = [...friendAgreementId1, ...friendAgreementId2];
+      const idsToDelete = friendAgreementsToDelete.map(agreement => agreement._id);
 
-        const result = await Friend.deleteMany({ friendAgreementsToDelete });
+      // https://www.mongodb.com/docs/manual/reference/method/db.collection.deleteMany/
+      // note: deleteMany works with filter objects that differs from deleteOne
+    
+      const result = await Friend.deleteMany({ _id: { $in: idsToDelete } });
 
-        res.status(200).json({
-            message: `Friend deleted`,
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            message: "Error deleting friend",
-        });
-    }
+      res.status(200).json({
+          message: `${result.deletedCount} agreements deleted`,
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({
+          message: "Error deleting agreements",
+      });
+  }
 });
 
-
-
-
-
-
-  // router.delete("/:hootId", verifyToken, async (req, res) => {
-  //   try {
-  //     const hoot = await Hoot.findById(req.params.hootId);
-  
-  //     if (!hoot.author.equals(req.user._id)) {
-  //       return res.status(403).send("You're not allowed to do that!");
-  //     }
-  
-  //     const deletedHoot = await Hoot.findByIdAndDelete(req.params.hootId);
-  //     res.status(200).json(deletedHoot);
-  //   } catch (err) {
-  //     res.status(500).json({ err: err.message });
-  //   }
-  // });
 
 module.exports = router;
