@@ -5,11 +5,14 @@ meta {
 }
 
 put {
-  url: http://localhost:3000/friends/accept/:requestId
+  url: http://localhost:3000/friends/accept/update
   body: json
   auth: inherit
 }
 
-params:path {
-  requestId: 67b9f8e75c4effe2a9309268
+body:json {
+  {
+    "status":"pending",
+    "updateId": "67bbd625f71de0fdd5302de7"
+  }
 }

@@ -12,6 +12,7 @@ const authRouter = require("./controllers/auth");
 const usersRouter = require("./controllers/users");
 const valuesRouter = require("./controllers/values");
 const friendsRouter = require("./controllers/friends");
+const messagesRouter = require("./controllers/messages");
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI);
@@ -30,6 +31,7 @@ app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/values", valuesRouter);
 app.use("/friends", friendsRouter);
+app.use("/messages", messagesRouter);
 
 //testing
 // app.use((req, res, next) => {
