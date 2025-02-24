@@ -6,7 +6,7 @@ const verifyToken = require("../middleware/verify-token");
 
 router.post("/request", verifyToken, async (req, res) => {
   try {
-    const { recipientId } = req.body;
+    const { recipientId } = req.body; // This is recipientID. Sent from frontend.
     const requesterId = req.user._id; // Get authenticated user's ID
 
     const recipient = await User.findById(recipientId);
@@ -14,16 +14,17 @@ router.post("/request", verifyToken, async (req, res) => {
       return res.status(404).json({ error: "Recipient not found" });
 
     const existingRequest = await Friend.findOne({
-      requester: requesterId,
-      recipient: recipientId,
+      requester: requesterId, // Taken from JWT Token
+      recipient: recipientId, // From Body that was sent over.
     });
 
     if (existingRequest)
+      // Checks if existing. Returns is there are existing request.
       return res.status(400).json({ error: "Friend request already sent" });
 
     const friendRequest = await Friend.create({
-      requester: requesterId,
-      recipient: recipientId,
+      requester: requesterId, // Taken from JWT Token// Taken from JWT Token
+      recipient: recipientId, // From Body that was sent over.
       status: "pending",
     });
 
@@ -36,8 +37,10 @@ router.post("/request", verifyToken, async (req, res) => {
 router.put("/accept", verifyToken, async (req, res) => {
   try {
     const { status } = req.body;
-    const currentUserId = req.user._id; // grab from token
+    const currentUserId = req.user._id; // Taken from JWT token.
+
     if (!status || !currentUserId) {
+      // To check if theres missing info. Now reduced to just check for status and currentUserId
       return res.status(400).json({ error: "Not enough Params" });
     }
 
@@ -64,7 +67,7 @@ router.put("/accept", verifyToken, async (req, res) => {
 
 router.put("/accept/update", verifyToken, async (req, res) => {
   try {
-    const { status, updateId } = req.body; // MongoDB ID. NOT requester or recipient ID.
+    const { status, updateId } = req.body; // Friend MongoDB ID. NOT requester or recipient ID.
     const currentUserId = req.user._id;
 
     const checkLog = await Friend.findOne({
@@ -97,6 +100,7 @@ router.put("/accept/update", verifyToken, async (req, res) => {
     }
 
     await Friend.create({
+      // Create a new Friend log that has reversed recipient and requester.
       requester: currentUpdate.recipient,
       recipient: currentUpdate.requester,
       status: "accepted",
