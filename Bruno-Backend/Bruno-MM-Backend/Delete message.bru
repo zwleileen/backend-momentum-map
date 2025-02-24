@@ -1,0 +1,23 @@
+meta {
+  name: Delete message
+  type: http
+  seq: 19
+}
+
+get {
+  url: {{HOST}}/messages/:userId
+  body: json
+  auth: inherit
+}
+
+params:path {
+  userId: 67ba9a65b74b326971bcdca9
+}
+
+body:json {
+  {
+    "text": "hello",
+    "sender": "67b2c9e046c71c3e7384efa6",
+    "receiver":"67ba9a65b74b326971bcdca9"
+  }
+}
