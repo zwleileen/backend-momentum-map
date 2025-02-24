@@ -17,4 +17,25 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
+router.get("/:userId", verifyToken, async (req, res) => {
+  try {
+    const messages = await Message.find({
+      receiver: req.params.userId,
+    }).populate("sender");
+
+    if (!messages) {
+      return res.status(404).json({
+        error: "There is no message.",
+      });
+    }
+
+    console.log("Found messages:", messages);
+
+    res.status(200).json(messages);
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;

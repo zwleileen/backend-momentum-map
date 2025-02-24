@@ -1,13 +1,17 @@
 meta {
-  name: Send message
+  name: Read message
   type: http
-  seq: 17
+  seq: 18
 }
 
-post {
-  url: {{HOST}}/messages
+get {
+  url: {{HOST}}/messages/:userId
   body: json
   auth: inherit
+}
+
+params:path {
+  userId: 67ba9a65b74b326971bcdca9
 }
 
 body:json {
