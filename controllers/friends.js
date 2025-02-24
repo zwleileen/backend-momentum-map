@@ -17,6 +17,7 @@ router.post("/request", verifyToken, async (req, res) => {
       requester: requesterId,
       recipient: recipientId,
     });
+
     if (existingRequest)
       return res.status(400).json({ error: "Friend request already sent" });
 
@@ -35,7 +36,7 @@ router.post("/request", verifyToken, async (req, res) => {
 router.put("/accept", verifyToken, async (req, res) => {
   try {
     const { status } = req.body;
-    const currentUserId = req.user._id;
+    const currentUserId = req.user._id; // grab from token
     if (!status || !currentUserId) {
       return res.status(400).json({ error: "Not enough Params" });
     }
@@ -49,6 +50,9 @@ router.put("/accept", verifyToken, async (req, res) => {
     if (!currentUserRequests || currentUserRequests.length === 0) {
       return res.status(404).json({ error: "You have no friend requests." });
     }
+    // if (currentUserRequests) {
+    //   return res.status(400).json({ error: "Friend request already sent" });
+    // }
 
     console.log(currentUserRequests);
     res.json({ currentUserRequests });
@@ -62,6 +66,17 @@ router.put("/accept/update", verifyToken, async (req, res) => {
   try {
     const { status, updateId } = req.body; // MongoDB ID. NOT requester or recipient ID.
     const currentUserId = req.user._id;
+
+    const checkLog = await Friend.findOne({
+      // find if the friend log has been created and accepted. if so, return code 400
+      _id: updateId,
+      status: "accepted",
+    });
+
+    if (checkLog) {
+      // if checkLog (recquest created and accepted), stop and return error msg.
+      return res.status(400).json({ error: "Friend request already sent" });
+    }
 
     //https://www.mongodb.com/docs/manual/reference/method/db.collection.findOneAndUpdate/
     const currentUpdate = await Friend.findOneAndUpdate(
