@@ -5,9 +5,10 @@ const verifyToken = require("../middleware/verify-token");
 
 router.post("/", verifyToken, async (req, res) => {
   try {
-    req.body.author = req.user._id;
+    const { recipientId } = req.body.receiver;
+    req.body.sender = req.user._id;
     const message = await Message.create(req.body);
-    message._doc.author = req.user;
+    message._doc.sender = req.user;
     console.log("Creating message:", message);
 
     res.status(201).json(message);
